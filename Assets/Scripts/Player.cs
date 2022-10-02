@@ -2,14 +2,19 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Freya;
+using UnityEngine.InputSystem.Controls;
 
 namespace IntroAssignment {
     public class Player : MonoBehaviour, Controls.IPlayerActions {
 
         public float movementSpeed;
-        public float rotationSensitivity;
+        public float jumpForce;
+        public float groundCheckHeight;
+        
+        private float _health;
+        private float _maxHealth;
     
-        public Transform playerTransform;
+        private Transform _playerTransform;
         private Rigidbody _rigidbody;
 
         private Controls controls;
@@ -17,7 +22,7 @@ namespace IntroAssignment {
         [SerializeField]private Transform _cameraTransform;
 
         void Awake(){
-            playerTransform = GetComponent<Transform>();
+            _playerTransform = GetComponent<Transform>();
             _rigidbody = GetComponent<Rigidbody>();
 
             _cameraTransform = Camera.main.transform;
@@ -30,42 +35,46 @@ namespace IntroAssignment {
         }
 
         private void FixedUpdate() {
-            PlayerMove(controls.Player.Move.ReadValue<Vector2>());
+            Vector2 movement = controls.Player.Move.ReadValue<Vector2>();
+            if(movement != Vector2.zero)
+                PlayerMove(controls.Player.Move.ReadValue<Vector2>());
         }
 
-        public void OnMove(InputAction.CallbackContext context) {
-            PlayerMove(context.ReadValue<Vector2>());
-        }
-        public void PlayerMove(Vector2 movement){
-            // Debug.Log(movement);
-            // _rigidbody.AddForce(new Vector3(movement.x,0,movement.y)*movementSpeed,ForceMode.Force);
-            Vector3 targetPosition = (_cameraTransform.right.FlattenY() * movement.x * movementSpeed) +
-                                     (_cameraTransform.forward.FlattenY() * movement.y * movementSpeed);
-            
-            playerTransform.LookAt(playerTransform.position + targetPosition);
-            playerTransform.Translate(targetPosition.x,0,targetPosition.z);
-            _rigidbody.MovePosition(targetPosition.FlattenY());
-            // _rigidbody.MovePosition();
-        }
-        
-        // public void PlayerMove(Vector2 movement){
-        //     Debug.Log(movement);
-        //     // _rigidbody.AddForce(new Vector3(movement.x,0,movement.y)*movementSpeed,ForceMode.Force);
-        //     Vector3 targetPosition = playerTransform.position +
-        //                              (_cameraTransform.right* movement.x * movementSpeed) +
-        //                              (_cameraTransform.forward * movement.y * movementSpeed);
-        //     playerTransform.LookAt(targetPosition);
-        //     playerTransform.Translate(targetPosition.x - playerTransform.position.x,0,targetPosition.z - playerTransform.position.z);
-        //     // _rigidbody.MovePosition();
-        // }
-        
-
-        public void OnJump(InputAction.CallbackContext context) {
-            // Debug.Log("Jump");
+        public void OnMove(InputAction.CallbackContext _) {
+            // PlayerMove(context.ReadValue<Vector2>());
         }
 
-        public void OnFire(InputAction.CallbackContext context) {
+        public void PlayerMove(Vector2 movement) {
+            Vector3 targetPosition = (_cameraTransform.right.FlattenY() * movement.x) +
+                                     (_cameraTransform.forward.FlattenY() * movement.y);
+            // Debug.Log(playerTransform.position + " " + targetPosition);
+            _playerTransform.LookAt(_playerTransform.position + targetPosition);
+            _playerTransform.Translate(Vector3.forward * movementSpeed);
+        }
+
+        public void OnJump(InputAction.CallbackContext _) {
+            if(GroundCheck())
+                _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        }
+
+        private bool GroundCheck() {
+            return Physics.Raycast(_playerTransform.position, Vector3.down, groundCheckHeight);
+        }
+
+        public void OnFire(InputAction.CallbackContext _) {
             // Debug.Log("Fire");
+        }
+        
+        ///<summary> Heal the Player </summary>
+        public void Heal(int healAmount) {
+            _health += healAmount;
+            _health.Clamp(0,_maxHealth);
+        }
+
+        ///<summary> Damage the Player </summary>
+        public void TakeDamage(int damage) {
+            _health -= damage;
+            _health.Clamp(0,_maxHealth);
         }
     }
 }

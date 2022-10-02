@@ -1,9 +1,10 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
+using Freya;
 
 namespace IntroAssignment {
-    public class CameraFollow : MonoBehaviour {
+    public class CameraFollow : MonoBehaviour, Controls.ICameraActions {
 
         [SerializeField] private Transform _target;
 
@@ -19,49 +20,62 @@ namespace IntroAssignment {
     
         private Transform _selfTransform;
         private Controls _controls;
-        private Vector3 targetRotation = Vector3.zero;
+        private Vector3 _targetRotation = Vector3.zero;
+
+        public float transitionTime;
+        private float _timePassed;
+        private Vector3 _sourcePosition;
+        private Vector3 _destinationPosition;
+        private Quaternion _sourceRotation;
+        private Quaternion _destinationRotation;
 
         private void Awake() {
             _selfTransform = GetComponent<Transform>();
         
             _controls = new Controls();
             _controls.Camera.Enable();
-            _controls.Camera.Look.performed += OrbitCamera;
+            _controls.Camera.SetCallbacks(this);
+            // _controls.Camera.Look.performed += OnLook;
         }
 
         public void SetTarget(Transform newTarget) {
             _target = newTarget;
         }
 
-        private void OrbitCamera(InputAction.CallbackContext context) {
+        public void OnLook(InputAction.CallbackContext context) {
+            if (!GameManager.canControl) return;
             Vector2 values = context.ReadValue<Vector2>();
 
             
-            targetRotation += new Vector3(-values.y,values.x) * mouseSensitivity;
+            _targetRotation += new Vector3(-values.y,values.x) * mouseSensitivity;
             
             if(_clampX)
-                targetRotation.x = Mathf.Clamp(targetRotation.x,_minMaxX.x,_minMaxX.y);
+                _targetRotation.x = Mathf.Clamp(_targetRotation.x,_minMaxX.x,_minMaxX.y);
 
             // if (!_smooth)
-            _selfTransform.localEulerAngles = targetRotation;
+            _selfTransform.localEulerAngles = _targetRotation;
                 
 
         }
 
-
+        public void StartTransition() {
+            _sourcePosition = _selfTransform.position;
+            _sourceRotation = _selfTransform.rotation;
+        }
         private void LateUpdate() {
-            // if(_smooth)
-            // {
-            //     _selfTransform.localEulerAngles = Vector3.SmoothDamp(_selfTransform.localEulerAngles, targetRotation,
-            //         ref _cameraVelocity, _smoothTime);
-            // }
-            
-            float cameraDist;
-            if (Physics.Raycast(_target.position, -transform.forward, out RaycastHit hit, _maxCameraDist)) {
-                cameraDist = hit.distance;
+            if (GameManager.canControl) {
+                float cameraDist;
+                if (Physics.Raycast(_target.position, -transform.forward, out RaycastHit hit, _maxCameraDist)) {
+                    cameraDist = hit.distance;
+                }
+                else cameraDist = _maxCameraDist;
+                _selfTransform.position = _target.position - transform.forward * cameraDist;
             }
-            else cameraDist = _maxCameraDist;
-            _selfTransform.position = _target.position - transform.forward * cameraDist;
+            else {
+                _timePassed += Time.deltaTime;
+                float t = Mathfs.Sin(_timePassed / transitionTime * Mathfs.TAU);
+                _selfTransform.position = Vector3.Lerp(_sourcePosition, _destinationPosition, t);
+            }
         }
     }
 }
