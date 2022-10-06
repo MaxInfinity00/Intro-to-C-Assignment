@@ -55,6 +55,24 @@ namespace IntroAssignment
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Aim"",
+                    ""type"": ""Button"",
+                    ""id"": ""89e9999b-c99c-46fd-8f14-8a3a0c15bf44"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchWeapon"",
+                    ""type"": ""Value"",
+                    ""id"": ""566e8ca1-dbb1-4a3a-b7ef-a87f2c283c97"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -264,6 +282,39 @@ namespace IntroAssignment
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""08777e46-7935-4b2f-a990-576098f0838f"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Aim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""20885063-4439-4216-aaa7-a49697df6a0f"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Aim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dbad81b0-b848-45f8-bb79-1bd7949a58fd"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": ""Invert,Clamp(min=-1,max=1)"",
+                    ""groups"": """",
+                    ""action"": ""SwitchWeapon"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -797,6 +848,15 @@ namespace IntroAssignment
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Aim"",
+                    ""type"": ""Button"",
+                    ""id"": ""3c8d1a75-5504-433e-8d13-4723701acda8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -832,6 +892,28 @@ namespace IntroAssignment
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""37febe15-fefd-448c-a032-bece0e0a1268"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Aim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""788830dc-5ffd-49f1-9d3a-5c3f49591821"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Aim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -839,15 +921,6 @@ namespace IntroAssignment
             ""name"": ""Manager"",
             ""id"": ""a2a7db1c-f038-4572-b7cd-2eb5edf988e8"",
             ""actions"": [
-                {
-                    ""name"": ""New action"",
-                    ""type"": ""Button"",
-                    ""id"": ""2d6e786b-c09e-4005-a8ea-1af89a734dd5"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
                 {
                     ""name"": ""Next Turn"",
                     ""type"": ""Button"",
@@ -859,17 +932,6 @@ namespace IntroAssignment
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""bd3e3c22-a393-410f-9a0e-2462c8c03327"",
-                    ""path"": """",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""New action"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
                 {
                     ""name"": """",
                     ""id"": ""611c8041-f72a-4b63-8710-049f09558672"",
@@ -913,7 +975,18 @@ namespace IntroAssignment
                     ""path"": ""<Keyboard>/backquote"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""ToggleConsole"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d8428b6e-7ed1-4bb9-8e70-51f5461782db"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""ToggleConsole"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1000,6 +1073,8 @@ namespace IntroAssignment
             m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
             m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
             m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
+            m_Player_Aim = m_Player.FindAction("Aim", throwIfNotFound: true);
+            m_Player_SwitchWeapon = m_Player.FindAction("SwitchWeapon", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1015,9 +1090,9 @@ namespace IntroAssignment
             // Camera
             m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
             m_Camera_Look = m_Camera.FindAction("Look", throwIfNotFound: true);
+            m_Camera_Aim = m_Camera.FindAction("Aim", throwIfNotFound: true);
             // Manager
             m_Manager = asset.FindActionMap("Manager", throwIfNotFound: true);
-            m_Manager_Newaction = m_Manager.FindAction("New action", throwIfNotFound: true);
             m_Manager_NextTurn = m_Manager.FindAction("Next Turn", throwIfNotFound: true);
             // Debug
             m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
@@ -1085,6 +1160,8 @@ namespace IntroAssignment
         private readonly InputAction m_Player_Move;
         private readonly InputAction m_Player_Fire;
         private readonly InputAction m_Player_Jump;
+        private readonly InputAction m_Player_Aim;
+        private readonly InputAction m_Player_SwitchWeapon;
         public struct PlayerActions
         {
             private @Controls m_Wrapper;
@@ -1092,6 +1169,8 @@ namespace IntroAssignment
             public InputAction @Move => m_Wrapper.m_Player_Move;
             public InputAction @Fire => m_Wrapper.m_Player_Fire;
             public InputAction @Jump => m_Wrapper.m_Player_Jump;
+            public InputAction @Aim => m_Wrapper.m_Player_Aim;
+            public InputAction @SwitchWeapon => m_Wrapper.m_Player_SwitchWeapon;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -1110,6 +1189,12 @@ namespace IntroAssignment
                     @Jump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                     @Jump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                     @Jump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
+                    @Aim.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAim;
+                    @Aim.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAim;
+                    @Aim.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAim;
+                    @SwitchWeapon.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchWeapon;
+                    @SwitchWeapon.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchWeapon;
+                    @SwitchWeapon.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchWeapon;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -1123,6 +1208,12 @@ namespace IntroAssignment
                     @Jump.started += instance.OnJump;
                     @Jump.performed += instance.OnJump;
                     @Jump.canceled += instance.OnJump;
+                    @Aim.started += instance.OnAim;
+                    @Aim.performed += instance.OnAim;
+                    @Aim.canceled += instance.OnAim;
+                    @SwitchWeapon.started += instance.OnSwitchWeapon;
+                    @SwitchWeapon.performed += instance.OnSwitchWeapon;
+                    @SwitchWeapon.canceled += instance.OnSwitchWeapon;
                 }
             }
         }
@@ -1237,11 +1328,13 @@ namespace IntroAssignment
         private readonly InputActionMap m_Camera;
         private ICameraActions m_CameraActionsCallbackInterface;
         private readonly InputAction m_Camera_Look;
+        private readonly InputAction m_Camera_Aim;
         public struct CameraActions
         {
             private @Controls m_Wrapper;
             public CameraActions(@Controls wrapper) { m_Wrapper = wrapper; }
             public InputAction @Look => m_Wrapper.m_Camera_Look;
+            public InputAction @Aim => m_Wrapper.m_Camera_Aim;
             public InputActionMap Get() { return m_Wrapper.m_Camera; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -1254,6 +1347,9 @@ namespace IntroAssignment
                     @Look.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnLook;
                     @Look.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnLook;
                     @Look.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnLook;
+                    @Aim.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnAim;
+                    @Aim.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnAim;
+                    @Aim.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnAim;
                 }
                 m_Wrapper.m_CameraActionsCallbackInterface = instance;
                 if (instance != null)
@@ -1261,6 +1357,9 @@ namespace IntroAssignment
                     @Look.started += instance.OnLook;
                     @Look.performed += instance.OnLook;
                     @Look.canceled += instance.OnLook;
+                    @Aim.started += instance.OnAim;
+                    @Aim.performed += instance.OnAim;
+                    @Aim.canceled += instance.OnAim;
                 }
             }
         }
@@ -1269,13 +1368,11 @@ namespace IntroAssignment
         // Manager
         private readonly InputActionMap m_Manager;
         private IManagerActions m_ManagerActionsCallbackInterface;
-        private readonly InputAction m_Manager_Newaction;
         private readonly InputAction m_Manager_NextTurn;
         public struct ManagerActions
         {
             private @Controls m_Wrapper;
             public ManagerActions(@Controls wrapper) { m_Wrapper = wrapper; }
-            public InputAction @Newaction => m_Wrapper.m_Manager_Newaction;
             public InputAction @NextTurn => m_Wrapper.m_Manager_NextTurn;
             public InputActionMap Get() { return m_Wrapper.m_Manager; }
             public void Enable() { Get().Enable(); }
@@ -1286,9 +1383,6 @@ namespace IntroAssignment
             {
                 if (m_Wrapper.m_ManagerActionsCallbackInterface != null)
                 {
-                    @Newaction.started -= m_Wrapper.m_ManagerActionsCallbackInterface.OnNewaction;
-                    @Newaction.performed -= m_Wrapper.m_ManagerActionsCallbackInterface.OnNewaction;
-                    @Newaction.canceled -= m_Wrapper.m_ManagerActionsCallbackInterface.OnNewaction;
                     @NextTurn.started -= m_Wrapper.m_ManagerActionsCallbackInterface.OnNextTurn;
                     @NextTurn.performed -= m_Wrapper.m_ManagerActionsCallbackInterface.OnNextTurn;
                     @NextTurn.canceled -= m_Wrapper.m_ManagerActionsCallbackInterface.OnNextTurn;
@@ -1296,9 +1390,6 @@ namespace IntroAssignment
                 m_Wrapper.m_ManagerActionsCallbackInterface = instance;
                 if (instance != null)
                 {
-                    @Newaction.started += instance.OnNewaction;
-                    @Newaction.performed += instance.OnNewaction;
-                    @Newaction.canceled += instance.OnNewaction;
                     @NextTurn.started += instance.OnNextTurn;
                     @NextTurn.performed += instance.OnNextTurn;
                     @NextTurn.canceled += instance.OnNextTurn;
@@ -1397,6 +1488,8 @@ namespace IntroAssignment
             void OnMove(InputAction.CallbackContext context);
             void OnFire(InputAction.CallbackContext context);
             void OnJump(InputAction.CallbackContext context);
+            void OnAim(InputAction.CallbackContext context);
+            void OnSwitchWeapon(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {
@@ -1414,10 +1507,10 @@ namespace IntroAssignment
         public interface ICameraActions
         {
             void OnLook(InputAction.CallbackContext context);
+            void OnAim(InputAction.CallbackContext context);
         }
         public interface IManagerActions
         {
-            void OnNewaction(InputAction.CallbackContext context);
             void OnNextTurn(InputAction.CallbackContext context);
         }
         public interface IDebugActions

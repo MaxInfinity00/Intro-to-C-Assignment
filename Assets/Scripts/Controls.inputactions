@@ -31,6 +31,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Aim",
+                    "type": "Button",
+                    "id": "89e9999b-c99c-46fd-8f14-8a3a0c15bf44",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SwitchWeapon",
+                    "type": "Value",
+                    "id": "566e8ca1-dbb1-4a3a-b7ef-a87f2c283c97",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -240,6 +258,39 @@
                     "processors": "",
                     "groups": "",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "08777e46-7935-4b2f-a990-576098f0838f",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aim",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "20885063-4439-4216-aaa7-a49697df6a0f",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aim",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dbad81b0-b848-45f8-bb79-1bd7949a58fd",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "Invert,Clamp(min=-1,max=1)",
+                    "groups": "",
+                    "action": "SwitchWeapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -773,6 +824,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Aim",
+                    "type": "Button",
+                    "id": "3c8d1a75-5504-433e-8d13-4723701acda8",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -808,6 +868,28 @@
                     "action": "Look",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "37febe15-fefd-448c-a032-bece0e0a1268",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Aim",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "788830dc-5ffd-49f1-9d3a-5c3f49591821",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Aim",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -815,15 +897,6 @@
             "name": "Manager",
             "id": "a2a7db1c-f038-4572-b7cd-2eb5edf988e8",
             "actions": [
-                {
-                    "name": "New action",
-                    "type": "Button",
-                    "id": "2d6e786b-c09e-4005-a8ea-1af89a734dd5",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
                 {
                     "name": "Next Turn",
                     "type": "Button",
@@ -835,17 +908,6 @@
                 }
             ],
             "bindings": [
-                {
-                    "name": "",
-                    "id": "bd3e3c22-a393-410f-9a0e-2462c8c03327",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "New action",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
                 {
                     "name": "",
                     "id": "611c8041-f72a-4b63-8710-049f09558672",
@@ -889,7 +951,18 @@
                     "path": "<Keyboard>/backquote",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "ToggleConsole",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d8428b6e-7ed1-4bb9-8e70-51f5461782db",
+                    "path": "<Gamepad>/select",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
                     "action": "ToggleConsole",
                     "isComposite": false,
                     "isPartOfComposite": false

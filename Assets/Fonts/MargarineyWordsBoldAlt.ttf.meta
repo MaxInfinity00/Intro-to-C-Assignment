@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 1b5911a87f45d89439a1f5ea3c787f78
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - MargarineyWords
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 57d57b59e518a654bbdc59b45497227e, type: 3}
+  - {fileID: 12800000, guid: ea58554077d69d441bdf8efe95398ac2, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

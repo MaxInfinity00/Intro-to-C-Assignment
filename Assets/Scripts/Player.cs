@@ -1,8 +1,7 @@
-using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Freya;
-using UnityEngine.InputSystem.Controls;
 
 namespace IntroAssignment {
     public class Player : MonoBehaviour, Controls.IPlayerActions {
@@ -13,31 +12,36 @@ namespace IntroAssignment {
         
         private float _health;
         private float _maxHealth;
+        public bool isAlive = true;
+
+        public List<Weapon> weapons;
+        private int _currentWeaponIndex;
     
-        private Transform _playerTransform;
+        public Transform playerTransform;
         private Rigidbody _rigidbody;
 
         private Controls controls;
 
         [SerializeField]private Transform _cameraTransform;
 
-        void Awake(){
-            _playerTransform = GetComponent<Transform>();
+        void Awake() {
+            isAlive = true;
+            playerTransform = GetComponent<Transform>();
             _rigidbody = GetComponent<Rigidbody>();
 
             _cameraTransform = Camera.main.transform;
             
             controls = new Controls();
-            controls.Player.Enable();
             controls.Player.SetCallbacks(this);
             
-            // GameManager.players.Add(this);
+            GameManager.instance.AddPlayer(this);
         }
 
         private void FixedUpdate() {
+            if (GameManager.instance.controlState != ControlState.On) return;
             Vector2 movement = controls.Player.Move.ReadValue<Vector2>();
             if(movement != Vector2.zero)
-                PlayerMove(controls.Player.Move.ReadValue<Vector2>());
+                PlayerMove(movement);
         }
 
         public void OnMove(InputAction.CallbackContext _) {
@@ -48,17 +52,26 @@ namespace IntroAssignment {
             Vector3 targetPosition = (_cameraTransform.right.FlattenY() * movement.x) +
                                      (_cameraTransform.forward.FlattenY() * movement.y);
             // Debug.Log(playerTransform.position + " " + targetPosition);
-            _playerTransform.LookAt(_playerTransform.position + targetPosition);
-            _playerTransform.Translate(Vector3.forward * movementSpeed);
+            playerTransform.LookAt(playerTransform.position + targetPosition);
+            playerTransform.Translate(Vector3.forward * movementSpeed);
         }
 
         public void OnJump(InputAction.CallbackContext _) {
-            if(GroundCheck())
+            if(GameManager.instance.controlState == ControlState.On && GroundCheck())
                 _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
 
         private bool GroundCheck() {
-            return Physics.Raycast(_playerTransform.position, Vector3.down, groundCheckHeight);
+            return Physics.Raycast(playerTransform.position, Vector3.down, groundCheckHeight);
+        }
+
+        public void OnSwitchWeapon(InputAction.CallbackContext context) {
+            if (!context.performed) return;
+            Debug.Log(context.ReadValue<float>());
+        }
+
+        public void OnAim(InputAction.CallbackContext _) {
+            
         }
 
         public void OnFire(InputAction.CallbackContext _) {
@@ -74,7 +87,19 @@ namespace IntroAssignment {
         ///<summary> Damage the Player </summary>
         public void TakeDamage(int damage) {
             _health -= damage;
-            _health.Clamp(0,_maxHealth);
+            if (_health <= 0)  Die();
+            else _health.Clamp(0,_maxHealth);
+        }
+
+        public void Die() {
+            isAlive = false;
+            
+            //other dead shit
+        }
+
+        public void SetControls(bool b) {
+            if (b) controls.Player.Enable();
+            else controls.Player.Disable();
         }
     }
 }
