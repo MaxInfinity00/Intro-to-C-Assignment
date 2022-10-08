@@ -10,15 +10,22 @@ namespace IntroAssignment {
     public class GameManager : MonoBehaviour, Controls.IManagerActions {
         
         public GameSettings gameSettings;
+        public int playerMaxHealth;
         [SerializeField] private CameraFollow _cameraFollow;
+        [SerializeField] private GameObject healthBarPrefab;
+        [SerializeField] private Transform healthBarParent;
         [SerializeField] private GameObject playerPrefab;
         [SerializeField] private List<Color> playerColors;
         [SerializeField] private Vector2 mapSpawnSize;
+        public int _currentPlayer = 0;
+
+        public GameObject GameOverText;
+        
+        [Header("Timer")]
         public float turnTime;
         public float turnWaitTime;
         public float transitionTime;
         private float _timeLeft;
-        [SerializeField] private int _currentPlayer = 0;
 
         [SerializeField] private Image timerImage;
         [SerializeField] private TextMeshProUGUI timerText;
@@ -29,14 +36,12 @@ namespace IntroAssignment {
 
         [Range(0, 11)] public float pickUpSpawnChances;
 
-        public ControlState controlState = ControlState.Off;
+        public ControlState controlState = ControlState.Waiting;
         private Controls _controls;
         public List<Player> players = new List<Player>();
         
         [Header("Level Mesh")]
-        public Renderer textureRenderer;
         public MeshFilter meshFilter;
-        public MeshRenderer meshRenderer;
         public MeshCollider meshCollider;
     
         public MeshSettings meshSettings;
@@ -46,7 +51,8 @@ namespace IntroAssignment {
 
         private void Awake() {
             instance = this;
-            
+            Player._maxHealth = playerMaxHealth;
+
             turnTime = gameSettings.turnTime;
             _timeLeft = turnTime;
             
@@ -65,6 +71,9 @@ namespace IntroAssignment {
                 Transform playerTransform = player.transform;
                 // playerTransform.position = hit.point + Vector3.up * 5;
                 playerTransform.LookAt(Vector3.up * playerTransform.position.y);
+
+                GameObject healthbar = Instantiate(healthBarPrefab, healthBarParent);
+                player.GetComponent<Player>().SetHealthBar(healthbar.GetComponent<HealthBar>());
             }
             
             _controls = new Controls();
@@ -75,7 +84,7 @@ namespace IntroAssignment {
         public void AddPlayer(Player player) {
             players.Add(player);
             if (players.Count == 1) {
-                player.SetControls(true);
+                player.OnStartTurn();
                 _cameraFollow.SetTarget(player.playerTransform);
                 controlState = ControlState.On;
                 _timeLeft = turnTime;
@@ -95,11 +104,12 @@ namespace IntroAssignment {
                     NextTurn();
                 }
             }
-            else if (controlState == ControlState.Off) {
+            else if (controlState == ControlState.Waiting) {
                 _timeLeft -= Time.deltaTime;
                 if (_timeLeft <= 0) {
                     controlState = ControlState.Transition;
                     _timeLeft = turnTime;
+                    players[_currentPlayer].OnStartTurn();
                 }
             }
         }
@@ -108,11 +118,12 @@ namespace IntroAssignment {
             if(context.performed) NextTurn();
         }
         
-        void NextTurn() {
+        public void NextTurn() {
             int lastPlayer = _currentPlayer;
             _timeLeft = turnWaitTime;
-            controlState = ControlState.Off;
-            players[_currentPlayer].SetControls(false);
+            controlState = ControlState.Waiting;
+            // players[_currentPlayer].SetControls(false);
+            players[_currentPlayer].OnEndTurn();
             
             while (true) {
                 _currentPlayer = (_currentPlayer + 1) % players.Count;
@@ -121,10 +132,11 @@ namespace IntroAssignment {
             
             if (lastPlayer == _currentPlayer) {
                 //GameOver Bitches
+                controlState = ControlState.GameOver;
             }
             else
             {
-                players[_currentPlayer].SetControls(true);
+                // players[_currentPlayer].SetControls(true);
                 _cameraFollow.SetTarget(players[_currentPlayer].playerTransform);
                 
                 float pickUpSpawn = Random.Range(0, 100f);
@@ -133,11 +145,26 @@ namespace IntroAssignment {
                 }
             }
         }
+
+        public void GameOver() {
+            // if (((players) => players.isAlive).ToList().Count <= 1) {
+            if (players.FindAll((Player player) => player.isAlive).Count <= 1){
+                controlState = ControlState.GameOver;
+                GameOverText.SetActive(true);
+            }
+        }
+
+        public void AddToTimer(int additionalTime) {
+            if (controlState == ControlState.On) {
+                _timeLeft += additionalTime;
+            }
+        }
     }
 
     public enum ControlState {
         On,
-        Off,
-        Transition
+        Waiting,
+        Transition,
+        GameOver
     }
 }

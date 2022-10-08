@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Default Game Settings
   m_EditorClassIdentifier: 
   seed: 123456798
-  playerCount: 4
-  turnTime: 25
+  playerCount: 2
+  turnTime: 3600

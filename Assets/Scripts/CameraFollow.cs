@@ -45,6 +45,7 @@ namespace IntroAssignment {
             _destinationPosition = newTarget.position - newTarget.forward * _maxCameraDist;
             _destinationRotation = Quaternion.Euler(Vector3.up * newTarget.localEulerAngles.y);
             _targetRotation = _destinationRotation.eulerAngles;
+            isAiming = false;
         }
 
         public void OnLook(InputAction.CallbackContext context) {
@@ -52,23 +53,25 @@ namespace IntroAssignment {
             
             Vector2 values = context.ReadValue<Vector2>();
             
-            // if (isAiming) {
-            //     _targetRotation = _targetRotation.FlattenY() + Vector3.left * values.y * mouseSensitivity;
-            //     
-            //     if(_clampX)
-            //         _targetRotation.x = Mathf.Clamp(_targetRotation.x,_minMaxX.x,_minMaxX.y);
-            //
-            //     _selfTransform.localEulerAngles = _targetRotation;
-            //     _target.Rotate(Vector3.up,values.x);
+                // _targetRotation = _targetRotation.FlattenY() + Vector3.left * values.y * mouseSensitivity;
+                //
+                // if(_clampX)
+                //     _targetRotation.x = Mathf.Clamp(_targetRotation.x,_minMaxX.x,_minMaxX.y);
+                //
+                // _selfTransform.localEulerAngles = _targetRotation;
             // }
             // else {
-                _targetRotation += new Vector3(-values.y,values.x) * mouseSensitivity;
-                
-                if(_clampX)
-                    _targetRotation.x = Mathf.Clamp(_targetRotation.x,_minMaxX.x,_minMaxX.y);
+            _targetRotation += new Vector3(-values.y,values.x) * mouseSensitivity;
+            
+            if(_clampX)
+                _targetRotation.x = Mathf.Clamp(_targetRotation.x,_minMaxX.x,_minMaxX.y);
 
-                _selfTransform.localEulerAngles = _targetRotation;
-            // }
+            _selfTransform.localEulerAngles = _targetRotation;
+            
+            if (isAiming) {
+                _target.Rotate(Vector3.up, values.x * mouseSensitivity);
+            }
+                // }
         }
 
         public void OnAim(InputAction.CallbackContext context) {
