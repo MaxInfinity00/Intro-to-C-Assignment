@@ -10,16 +10,20 @@ namespace IntroAssignment {
     public class GameManager : MonoBehaviour, Controls.IManagerActions {
         
         public GameSettings gameSettings;
-        public int playerMaxHealth;
         [SerializeField] private CameraFollow _cameraFollow;
-        [SerializeField] private GameObject healthBarPrefab;
-        [SerializeField] private Transform healthBarParent;
+
+        public GameObject GameOverText;
+        public ControlState controlState = ControlState.Waiting;
+        
+        [Header("Players")]
+        public int currentPlayer = 0;
+        public List<Player> players = new List<Player>();
         [SerializeField] private GameObject playerPrefab;
         [SerializeField] private List<Color> playerColors;
         [SerializeField] private Vector2 mapSpawnSize;
-        public int _currentPlayer = 0;
-
-        public GameObject GameOverText;
+        public int playerMaxHealth;
+        [SerializeField] private GameObject healthBarPrefab;
+        [SerializeField] private Transform healthBarParent;
         
         [Header("Timer")]
         public float turnTime;
@@ -34,12 +38,11 @@ namespace IntroAssignment {
         [SerializeField] private Color timerEndColor;
         // private bool isOngoingTurn;
 
-        [Range(0, 11)] public float pickUpSpawnChances;
+        [Header("Pickups")]
+        [Range(0, 100)] public float pickUpSpawnChances;
+        [SerializeField] private List<GameObject> pickups;
 
-        public ControlState controlState = ControlState.Waiting;
-        private Controls _controls;
-        public List<Player> players = new List<Player>();
-        
+
         [Header("Level Mesh")]
         public MeshFilter meshFilter;
         public MeshCollider meshCollider;
@@ -47,6 +50,7 @@ namespace IntroAssignment {
         public MeshSettings meshSettings;
         public HeightMapSettings heightMapSettings;
 
+        private Controls _controls;
         public static GameManager instance;
 
         private void Awake() {
@@ -109,7 +113,7 @@ namespace IntroAssignment {
                 if (_timeLeft <= 0) {
                     controlState = ControlState.Transition;
                     _timeLeft = turnTime;
-                    players[_currentPlayer].OnStartTurn();
+                    players[currentPlayer].OnStartTurn();
                 }
             }
         }
@@ -119,29 +123,29 @@ namespace IntroAssignment {
         }
         
         public void NextTurn() {
-            int lastPlayer = _currentPlayer;
+            int lastPlayer = currentPlayer;
             _timeLeft = turnWaitTime;
             controlState = ControlState.Waiting;
             // players[_currentPlayer].SetControls(false);
-            players[_currentPlayer].OnEndTurn();
+            players[currentPlayer].OnEndTurn();
             
             while (true) {
-                _currentPlayer = (_currentPlayer + 1) % players.Count;
-                if (players[_currentPlayer].isAlive) break;
+                currentPlayer = (currentPlayer + 1) % players.Count;
+                if (players[currentPlayer].isAlive) break;
             }
             
-            if (lastPlayer == _currentPlayer) {
+            if (lastPlayer == currentPlayer) {
                 //GameOver Bitches
                 controlState = ControlState.GameOver;
             }
             else
             {
                 // players[_currentPlayer].SetControls(true);
-                _cameraFollow.SetTarget(players[_currentPlayer].playerTransform);
+                _cameraFollow.SetTarget(players[currentPlayer].playerTransform);
                 
                 float pickUpSpawn = Random.Range(0, 100f);
                 if (pickUpSpawn <= pickUpSpawnChances) {
-                    //spawn pickup
+                    SpawnPickup();
                 }
             }
         }
@@ -158,6 +162,14 @@ namespace IntroAssignment {
             if (controlState == ControlState.On) {
                 _timeLeft += additionalTime;
             }
+        }
+
+        public void SpawnPickup() {
+            Vector3 randomPosition = new Vector3(Random.Range(-mapSpawnSize.x, mapSpawnSize.x), 100,
+                Random.Range(-mapSpawnSize.y, mapSpawnSize.y));
+            Physics.Raycast(randomPosition, Vector3.down, out RaycastHit hit);
+            GameObject randomPickup = pickups[Random.Range(0,pickups.Count-1)];
+            Instantiate(randomPickup, hit.point + Vector3.up * 0.75f,Quaternion.identity);
         }
     }
 

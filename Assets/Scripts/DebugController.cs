@@ -32,7 +32,7 @@ namespace IntroAssignment {
                 (value) => GameManager.instance.AddToTimer(value));
             superPotion = new DebugCommand("superpotion", "fully heals active player", "superpotion",()=> {
                 if (GameManager.instance.controlState == ControlState.On) {
-                    GameManager.instance.players[GameManager.instance._currentPlayer].Heal(Player._maxHealth);
+                    GameManager.instance.players[GameManager.instance.currentPlayer].Heal(Player._maxHealth);
                 }
             });
             help = new DebugCommand("help", "Show a list of commands", "help", () => {

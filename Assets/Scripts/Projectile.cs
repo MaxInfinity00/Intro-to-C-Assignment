@@ -11,6 +11,7 @@ namespace IntroAssignment {
         [SerializeField] private float _explosiveForce;
         [SerializeField] private float _explosionRange;
         [SerializeField] private GameObject _explosionFX;
+        
 
         [Header("Constant Force")]
         [SerializeField] private bool _constantForce;
@@ -23,6 +24,7 @@ namespace IntroAssignment {
 
         private string test;
         private bool collided;
+        private bool exploded;
 
         private void Awake() {
             Spawn();
@@ -30,6 +32,7 @@ namespace IntroAssignment {
 
         private void Spawn() {
             collided = false;
+            exploded = false;
             if (_constantForce)
                 _projectileRigidbody = GetComponent<Rigidbody>();
             
@@ -45,12 +48,19 @@ namespace IntroAssignment {
         private void OnCollisionEnter(Collision collision) {
             if (!onContact || collided) return;
             collided = true;
-            
-            if(_explosive) Explode();
-            else collision.collider.GetComponent<Player>()?.TakeDamage(_damage);
+
+            if (_explosive) {
+                Explode();
+                exploded = true;
+            }
+            else {
+                GetComponent<Renderer>().enabled = false;
+                collision.collider.GetComponent<Player>()?.TakeDamage(_damage);
+            }
         }
         
-        public void Explode(){
+        public void Explode() {
+            exploded = true;
 
             GetComponent<Renderer>().enabled = false;
             
@@ -58,6 +68,7 @@ namespace IntroAssignment {
                 GameObject fx = Instantiate(_explosionFX, _projectileTransform.position, Quaternion.identity);
                 Destroy(fx,4);
             }
+            
             Collider[] colliders = Physics.OverlapSphere(transform.position, _explosionRange);
             foreach (Collider collider in colliders) {
                 Player player = collider.GetComponent<Player>();
@@ -76,7 +87,7 @@ namespace IntroAssignment {
                 }
             }
 
-            if (!onContact) {
+            if (!onContact && !exploded) {
                 if (timeSpent >= lifeTime - 1) {
                     Explode();
                 }

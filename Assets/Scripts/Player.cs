@@ -13,19 +13,24 @@ namespace IntroAssignment {
         private int _health;
         public static int _maxHealth;
         public bool isAlive = true;
-        public HealthBar healthBar;
+        private HealthBar _healthBar;
 
         public List<Weapon> weapons;
         private int _currentWeaponIndex;
     
-        public Transform playerTransform;
+        [HideInInspector]public Transform playerTransform;
         private Rigidbody _rigidbody;
 
         private Controls controls;
 
-        [SerializeField] private Transform _cameraTransform;
+        private Transform _cameraTransform;
 
         private bool isAiming;
+        [SerializeField] private MeshRenderer Glasses;
+
+        public Weapon currentWeapon {
+            get => weapons[_currentWeaponIndex];
+        }
 
         void Awake() {
             isAlive = true;
@@ -44,15 +49,15 @@ namespace IntroAssignment {
 
         public void SetHealthBar(HealthBar healthBar) {
             _health = _maxHealth;
-            this.healthBar = healthBar;
+            this._healthBar = healthBar;
             healthBar.UpdateUI(_health,_maxHealth);
         }
 
         private void Start() {
             GameManager.instance?.AddPlayer(this);
-            if (healthBar != null) {
+            if (_healthBar != null) {
                 _health = _maxHealth;
-                healthBar.UpdateUI(_health,_maxHealth);
+                _healthBar.UpdateUI(_health,_maxHealth);
             }
             // throw new NotImplementedException();
         }
@@ -115,9 +120,11 @@ namespace IntroAssignment {
         public void OnAim(InputAction.CallbackContext context) {
             if (context.performed) {
                 isAiming = true;
+                Glasses.enabled = false;
             }
             else if (context.canceled) {
                 isAiming = false;
+                Glasses.enabled = true;
             }
         }
 
@@ -132,7 +139,7 @@ namespace IntroAssignment {
 
         public void OnStartTurn() {
             SetControls(true);
-            healthBar.StartTurn();
+            _healthBar.StartTurn();
             if (weapons.Count > 0) {
                 AmmoIndicator.instance.UpdateAmmo(weapons[_currentWeaponIndex].currentAmmo);
             }
@@ -142,8 +149,9 @@ namespace IntroAssignment {
         }
 
         public void OnEndTurn() {
+            Glasses.enabled = true;
             SetControls(false);
-            healthBar.EndTurn();
+            _healthBar.EndTurn();
             
         }
         
@@ -151,7 +159,7 @@ namespace IntroAssignment {
         public void Heal(int healAmount) {
             _health += healAmount;
             _health.Clamp(0,_maxHealth);
-            healthBar.UpdateUI(_health,_maxHealth);
+            _healthBar.UpdateUI(_health,_maxHealth);
         }
 
         ///<summary> Damage the Player </summary>
@@ -159,13 +167,13 @@ namespace IntroAssignment {
             _health -= damage;
             if (_health <= 0)  Die();
             else _health.Clamp(0,_maxHealth);
-            healthBar.UpdateUI(_health,_maxHealth);
+            _healthBar.UpdateUI(_health,_maxHealth);
         }
 
         public void Die() {
             isAlive = false;
             gameObject.SetActive(false);
-            healthBar.Die();
+            _healthBar.Die();
             GameManager.instance.GameOver();
         }
 
