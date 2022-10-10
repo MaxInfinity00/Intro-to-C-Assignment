@@ -112,4 +112,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pickupType: 0
-  _rotationSpeed: 5
+  _rotationSpeed: 60

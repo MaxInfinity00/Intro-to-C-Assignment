@@ -6,7 +6,7 @@ namespace IntroAssignment {
     public class Pickup : MonoBehaviour {
         [SerializeField]private PickupType _pickupType;
         private Transform _transform;
-        [SerializeField] private float _rotationSpeed = 5f;
+        [SerializeField] private float _rotationSpeed = 60f;
 
         private void Awake() {
             _transform = transform;
@@ -33,7 +33,7 @@ namespace IntroAssignment {
         }
 
         private void Update() {
-            _transform.Rotate(Vector3.up,_rotationSpeed);
+            _transform.Rotate(Vector3.up,_rotationSpeed * Time.deltaTime);
         }
     }
 

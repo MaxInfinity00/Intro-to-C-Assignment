@@ -101,20 +101,20 @@ namespace IntroAssignment {
             if (!context.performed || weapons.Count <= 0) return;
             weapons[_currentWeaponIndex].Disable();
             
-            while (true) {
-                _currentWeaponIndex = (_currentWeaponIndex + (int)context.ReadValue<float>()) % weapons.Count;
-                if (_currentWeaponIndex == -1) _currentWeaponIndex = weapons.Count-1;
-                if (weapons[_currentWeaponIndex].currentAmmo > 0) break;
-            }
+            // while (true) {
+            _currentWeaponIndex = (_currentWeaponIndex + (int)context.ReadValue<float>()) % weapons.Count;
+            if (_currentWeaponIndex == -1) _currentWeaponIndex = weapons.Count-1;
+                // if (weapons[_currentWeaponIndex].currentAmmo > 0) break;
+            // }
             
             weapons[_currentWeaponIndex].Enable();
+            AmmoIndicator.instance.UpdateAmmo(weapons[_currentWeaponIndex].currentAmmo);
             
-            if (weapons.Count > 0) {
-                AmmoIndicator.instance.UpdateAmmo(weapons[_currentWeaponIndex].currentAmmo);
-            }
-            else {
-                AmmoIndicator.instance.HideAmmo();
-            }
+            // if (weapons.Count > 0) {
+            // }
+            // else {
+            //     AmmoIndicator.instance.HideAmmo();
+            // }
         }
 
         public void OnAim(InputAction.CallbackContext context) {
@@ -129,7 +129,7 @@ namespace IntroAssignment {
         }
 
         public void OnFire(InputAction.CallbackContext context) {
-            if (!context.performed) return;
+            if (!context.performed || GameManager.instance.controlState != ControlState.On) return;
             if (weapons.Count > 0 && weapons[_currentWeaponIndex].currentAmmo > 0) {
                 weapons[_currentWeaponIndex].Fire();
                 GameManager.instance.NextTurn();
@@ -158,7 +158,7 @@ namespace IntroAssignment {
         ///<summary> Heal the Player </summary>
         public void Heal(int healAmount) {
             _health += healAmount;
-            _health.Clamp(0,_maxHealth);
+            _health = _health.Clamp(0,_maxHealth);
             _healthBar.UpdateUI(_health,_maxHealth);
         }
 
@@ -166,7 +166,7 @@ namespace IntroAssignment {
         public void TakeDamage(int damage) {
             _health -= damage;
             if (_health <= 0)  Die();
-            else _health.Clamp(0,_maxHealth);
+            else _health = _health.Clamp(0,_maxHealth);
             _healthBar.UpdateUI(_health,_maxHealth);
         }
 

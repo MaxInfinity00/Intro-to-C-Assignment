@@ -75,6 +75,7 @@ namespace IntroAssignment {
         }
 
         public void OnAim(InputAction.CallbackContext context) {
+            if (GameManager.instance.controlState != ControlState.On) return;
             _selfTransform.rotation = _target.rotation;
             _targetRotation = _target.rotation.eulerAngles;
             if (context.performed) {

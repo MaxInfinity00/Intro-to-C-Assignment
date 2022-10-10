@@ -165,8 +165,8 @@ namespace IntroAssignment {
         }
 
         public void SpawnPickup() {
-            Vector3 randomPosition = new Vector3(Random.Range(-mapSpawnSize.x, mapSpawnSize.x), 100,
-                Random.Range(-mapSpawnSize.y, mapSpawnSize.y));
+            Vector3 randomPosition = new Vector3(Random.Range(-mapSpawnSize.x/2f, mapSpawnSize.x/2f), 100,
+                Random.Range(-mapSpawnSize.y/2f, mapSpawnSize.y/2f));
             Physics.Raycast(randomPosition, Vector3.down, out RaycastHit hit);
             GameObject randomPickup = pickups[Random.Range(0,pickups.Count-1)];
             Instantiate(randomPickup, hit.point + Vector3.up * 0.75f,Quaternion.identity);
